@@ -1,0 +1,93 @@
+
+import streamlit as st
+
+st.set_page_config(
+    page_title="README AI Generator",
+    page_icon="📝",
+    layout="centered"
+)
+
+st.title("📝 README AI Generator")
+st.write("Create a professional GitHub README in seconds.")
+
+project_name = st.text_input(
+    "Project name",
+    placeholder="My Awesome Project"
+)
+
+description = st.text_area(
+    "Project description",
+    placeholder="What does your project do?"
+)
+
+language = st.selectbox(
+    "Programming language",
+    ["Python", "JavaScript", "TypeScript", "Java", "C++", "Other"]
+)
+
+features = st.text_area(
+    "Features (one per line)",
+    placeholder="Easy to use\nFast and reliable\nOpen source"
+)
+
+installation = st.text_area(
+    "Installation instructions",
+    placeholder="pip install -r requirements.txt"
+)
+
+usage = st.text_area(
+    "How to use your project",
+    placeholder="python main.py"
+)
+
+if st.button("Generate README", type="primary"):
+    if not project_name.strip() or not description.strip():
+        st.warning("Please enter a project name and description.")
+    else:
+        feature_list = "\n".join(
+            f"- {line.strip()}"
+            for line in features.splitlines()
+            if line.strip()
+        )
+
+        readme = f"""# {project_name}
+
+{description}
+
+## Features
+
+{feature_list or "- Add your features here"}
+
+## Technology Stack
+
+- {language}
+
+## Installation
+
+```bash
+{installation or "Add installation instructions here"}
+```
+
+## Usage
+
+```bash
+{usage or "Add usage instructions here"}
+```
+
+## Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+## License
+
+Choose a license appropriate for your project.
+"""
+
+        st.subheader("Your README preview")
+        st.markdown(readme)
+        st.download_button(
+            "⬇️ Download README.md",
+            data=readme,
+            file_name="README.md",
+            mime="text/markdown"
+        )
